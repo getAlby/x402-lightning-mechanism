@@ -28,7 +28,9 @@ export type LightningPaymentRequirementsExtra = {
 };
 
 /**
- * NWC connection string used to authenticate with a Lightning wallet.
- * Format: `nostr+walletconnect://<walletPubkey>?relay=<relayUrl>&secret=<secret>`
+ * Minimal interface for a Lightning client capable of paying BOLT11 invoices.
+ * Any object implementing this method is accepted (e.g. NWCClient).
  */
-export type NWCConnectionString = string;
+export interface Wallet {
+  payInvoice(args: { invoice: string }): Promise<{ preimage: string }>;
+}

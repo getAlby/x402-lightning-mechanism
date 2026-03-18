@@ -29,6 +29,7 @@
 
 import { wrapFetchWithPayment } from "@x402/fetch";
 import { x402Client } from "@x402/core/client";
+import { NWCClient } from "@getalby/sdk/nwc";
 import { isLightningNetwork, isValidBolt11Invoice } from "../dist/esm/index.js"
 import type { ExactLightningPayload } from "../dist/esm/index.js"
 
@@ -56,8 +57,9 @@ async function main() {
   // -------------------------------------------------------------------------
   // Build the x402 client
   // -------------------------------------------------------------------------
+  const nwcClient = new NWCClient({ nostrWalletConnectUrl: NWC_URL });
 
-  const lightningScheme = new ExactLightningScheme(NWC_URL);
+  const lightningScheme = new ExactLightningScheme({ nwcClient });
 
   const client = new x402Client();
   client.register("lightning:*", lightningScheme);

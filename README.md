@@ -37,7 +37,6 @@ This package provides three main components for handling x402 payments on the Li
 
 - `ExactLightningPayload` – The payment payload shape: `{ preimage: string; paymentHash: string }`
 - `LightningPaymentRequirementsExtra` – Extra fields on payment requirements: `{ invoice: string }`
-- `NWCConnectionString` – Type alias for a `nostr+walletconnect://...` connection string
 
 ### Subpath Exports
 
@@ -93,10 +92,12 @@ Lightning payments are denominated in **satoshis** (`sat`) — the smallest indi
 
 ```typescript
 import { x402Client } from "@x402/core/client";
+import { NWCClient } from "@getalby/sdk/nwc";
 import { ExactLightningScheme } from "@x402/lightning/exact/client";
 
-const nwcUrl = "nostr+walletconnect://..."; // from user's wallet
-const client = new x402Client().register("lightning:*", new ExactLightningScheme(nwcUrl));
+const nwcUrl = "nostr+walletconnect://..."; // from wallet
+const nwcClient = new NWCClient({ nostrWalletConnectUrl: nwcUrl });
+const client = new x402Client().register("lightning:*", new ExactLightningScheme({ nwcClient }));
 
 // The client automatically handles 402 responses
 const response = await client.fetch("https://api.example.com/premium/data");
